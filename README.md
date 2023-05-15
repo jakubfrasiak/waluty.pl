@@ -1,1 +1,1 @@
-# projektowanie_oprogramowania_projek1
+# waluty.pl - projekt szkolny
