@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Waluty.pl</title>
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">   
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <!-- Wykresy -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" href="https://i.imgur.com/fZ6SxhR.png">
@@ -15,7 +15,7 @@
 
 <body style="overflow-x: hidden;">
     <div id="test"></div>
-    <img src="https://i.imgur.com/fZ6SxhR.png" style="position: fixed; bottom: 5vw; right: 5vw; z-index: 999; width: 100px;" alt="portfel">
+    <img src="https://imgur.com/vUdG3ur" style="position: fixed; bottom: 5vw; right: 5vw; z-index: 999; width: 100px;" alt="portfel">
     <nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -47,22 +47,26 @@
             const currencyLastDays = data[currency].lastDays;
             const currencyRate = data[currency].lastDays[data[currency].lastDays.length - 1];
         %>
-        <div class="container mt-2">
-            <div class="row">
-                <div class="col-12">
-                    <div class="jumbotron">
-                        <h2 class="text-center text-capitalize"><%=`${currencyName} (${currency})`%></h2>
-                        <div class="row justify-content-center">
-                            <p class="text-center"><%=`${currencyRate} PLN`%></p>
-                        </div>
-                        <div class="chart-cnt">
-                            <canvas id="chart-<%=currency%>" width="600" height="300"></canvas>
+            <div class="container mt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="jumbotron">
+                            <h2 class="text-center text-capitalize">
+                                <%=`${currencyName} (${currency})`%>
+                            </h2>
+                            <div class="row justify-content-center">
+                                <p class="text-center">
+                                    <%=`${currencyRate} PLN`%>
+                                </p>
+                            </div>
+                            <div class="chart-cnt">
+                                <canvas id="chart-<%=currency%>" width="600" height="300"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <% } %>
+            <% } %>
 
     </div>
     <footer class="text-center">
@@ -82,15 +86,15 @@
         for (const currency of Object.keys(data)) {
             const currencyLastDays = data[currency].lastDays
             const chart = document.getElementById(`chart-${currency}`)
-            
+
             const days = []
             const today = new Date().getTime()
 
             for (let i = 0; i < currencyLastDays.length; i++) {
                 const currencyRate = currencyLastDays[i];
 
-                const currentDay = currencyLastDays.length-i
-                const realDate = new Date(today-(currentDay*86400*1000))
+                const currentDay = currencyLastDays.length - i
+                const realDate = new Date(today - (currentDay * 86400 * 1000))
 
                 days.push(`${realDate.getDate()<10 ? `0${realDate.getDate()}` : realDate.getDate()}.${realDate.getMonth()+1 < 10 ? `0${realDate.getMonth()+1}` : realDate.getMonth()}.${realDate.getFullYear()}`)
             }
