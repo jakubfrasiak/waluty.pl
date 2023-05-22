@@ -1,0 +1,6 @@
+{
+    "authors": ["Jakub", "Tobiasz", "Staszek", "Przemek"],
+    "port": 3000,
+    "days": 10,
+    "currencies": ["USD", "EUR", "CHF", "CAD", "HKD", "JPY"]
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Waluty.pl</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">   
+    <!-- Wykresy -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="https://i.imgur.com/fZ6SxhR.png">
+</head>
+
+<body style="overflow-x: hidden;">
+    <div id="test"></div>
+    <img src="https://i.imgur.com/fZ6SxhR.png" style="position: fixed; bottom: 5vw; right: 5vw; z-index: 999; width: 100px;" alt="portfel">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Strona Główna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">O nas</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">kontakt</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="tel:123-456-7890">nr 123-456-789</a>
+                        <a class="dropdown-item" href="mailto:Kontakt@waluty.pl">Kontakt@waluty.pl</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Adres</a>
+                    </div>
+                </li>
+            </ul>
+            <strong class="form-inline my-2 my-lg-0">Waluty.pl</strong>
+        </div>
+    </nav>
+    <div id="chartsAll">
+        <% for (const currency of Object.keys(data)) { 
+            const currencyName = data[currency].name;
+            const currencyLastDays = data[currency].lastDays;
+            const currencyRate = data[currency].lastDays[data[currency].lastDays.length - 1];
+        %>
+        <div class="container mt-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="jumbotron">
+                        <h2 class="text-center text-capitalize"><%=`${currencyName} (${currency})`%></h2>
+                        <div class="row justify-content-center">
+                            <p class="text-center"><%=`${currencyRate} PLN`%></p>
+                        </div>
+                        <div class="chart-cnt">
+                            <canvas id="chart-<%=currency%>" width="600" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+    </div>
+    <footer class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p>Copyright © Waluty.pl. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let data = JSON.parse('<%-JSON.stringify(data)%>')
+        console.log(data)
+        for (const currency of Object.keys(data)) {
+            const currencyLastDays = data[currency].lastDays
+            const chart = document.getElementById(`chart-${currency}`)
+            
+            const days = []
+            const today = new Date().getTime()
+
+            for (let i = 0; i < currencyLastDays.length; i++) {
+                const currencyRate = currencyLastDays[i];
+
+                const currentDay = currencyLastDays.length-i
+                const realDate = new Date(today-(currentDay*86400*1000))
+
+                days.push(`${realDate.getDate()<10 ? `0${realDate.getDate()}` : realDate.getDate()}.${realDate.getMonth()+1 < 10 ? `0${realDate.getMonth()+1}` : realDate.getMonth()}.${realDate.getFullYear()}`)
+            }
+
+            const displayedChart = new Chart(chart, {
+                type: 'line',
+                data: {
+                labels: days,
+                datasets: [{
+                    label: '',
+                    data: currencyLastDays,
+                    borderWidth: 1,
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                    fill: true
+                }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip:{
+                            padding: 20
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+            window.addEventListener('afterprint', () => {
+                myChart.resize();
+            });
+            window.addEventListener('beforeprint', () => {
+                myChart.resize(600,300);
+            });
+        }
+    </script>
+</body>
+
+</html>
