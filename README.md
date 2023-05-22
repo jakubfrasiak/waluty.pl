@@ -31,8 +31,8 @@ node .
     
 ## Autorzy
 
-- [@graficzek](https://www.github.com/graficzekk)
 - [@patrick3939](https://www.github.com/patrick3969)
+- inni..
 
 ## Licencja
 Projekt jest tylko do odczytu, przed użyciem jakiegokolwiek fragmentu kodu należy skonsultować się z jego autorami. W przeciwnym wypadku może to skutkować pozwem.
