@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,131 @@
     <meta name="keywords" content="waluty, portfel, wymiana walut">
     <meta name="description" content="Strona na której przejrzysz bierzące kursy wymiany walut">
     <title>Twój portfel</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 </head>
+
 <body>
-    <%  %>
-</body>
+    <style>
+        .currency-list {
+            list-style-type: none;
+            padding: 0;
+            max-width: 500px;
+        }
+        
+        .currency-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #ddd;
+            width: 500px;
+        }
+        
+        .currency-list-item:first-child {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .currency-buttons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .currency-button {
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Strona Główna</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">O nas</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">kontakt</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="tel:123-456-7890">nr 123-456-789</a>
+                            <a class="dropdown-item" href="mailto:Kontakt@waluty.pl">Kontakt@waluty.pl</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Adres</a>
+                        </div>
+                    </li>
+                </ul>
+                <strong class="form-inline my-2 my-lg-0">Waluty.pl</strong>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="text-center">
+                <ul class="currency-list d-inline-block">
+                    <li class="currency-list-item">
+                        <span>Stan Konta: 10000zł</span>
+                    </li>
+                    <li class="currency-list-item">
+                        <span>Dolar amerykański: 241</span>
+                        <div class="currency-buttons">
+                            <button class="currency-button btn btn-danger">-</button>
+                            <button class="currency-button btn btn-success">+</button>
+                        </div>
+                    </li>
+                    <li class="currency-list-item">
+                        <span>Euro: 333234</span>
+                        <div class="currency-buttons">
+                            <button class="currency-button btn btn-danger">-</button>
+                            <button class="currency-button btn btn-success">+</button>
+                        </div>
+                    </li>
+                    <li class="currency-list-item">
+                        <span>Frank Szwajcarski: 44</span>
+                        <div class="currency-buttons">
+                            <button class="currency-button btn btn-danger">-</button>
+                            <button class="currency-button btn btn-success">+</button>
+                        </div>
+                    </li>
+                    <li class="currency-list-item">
+                        <span>Dolar Kanadyjski: 2</span>
+                        <div class="currency-buttons">
+                            <button class="currency-button btn btn-danger">-</button>
+                            <button class="currency-button btn btn-success">+</button>
+                        </div>
+                    </li>
+                    <li class="currency-list-item">
+                        <span>Dolar Hongkongu: 4</span>
+                        <div class="currency-buttons">
+                            <button class="currency-button btn btn-danger">-</button>
+                            <button class="currency-button btn btn-success">+</button>
+                        </div>
+                    </li>
+                    <li class="currency-list-item">
+                        <span>Jen (Japonia): 0</span>
+                        <div class="currency-buttons">
+                            <button class="currency-button btn btn-danger">-</button>
+                            <button class="currency-button btn btn-success">+</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <footer class="text-center fixed-bottom py-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <p>Copyright © Waluty.pl. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+
 </html>
