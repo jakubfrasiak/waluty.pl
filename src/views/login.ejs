@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="login" type="string" placeholder="login">
+    <input id="password" type="password" placeholder="hasło">
+    <input type="button" onclick="check()" value="Sprawdź"></input>
+</body>
+<script>
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function createUser(login, password) {
+        setCookie('login', login, 1)
+        setCookie('password', password, 1)
+    }
+
+    function check() {
+        const login = document.getElementById('login').value
+        const password = document.getElementById('password').value
+
+        const cookieLogin = getCookie('login')
+        const cookiePassword = getCookie('password')
+
+        if(cookieLogin && cookiePassword) {
+            console.log('konto zostało wcześniej stworzone!')
+            // jeśli wcześniej stworzył konto
+            if(cookieLogin === login && password === password) {
+                // hasło i login sie zgadza! idziemy do portfela!
+                window.open('/portfel')
+            } else {
+                // wyświetl błąd
+                alert('hasło bądź login się nie zgadza! Spróbuj jeszcze raz! :C')
+            }
+        } else {
+            // jeśli nie stworzył konta - stwórz je!
+            console.log('tworzymy konto!')
+            createUser(login, password)
+        }
+    }
+</script>
+</html>
