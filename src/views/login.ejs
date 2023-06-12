@@ -17,10 +17,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Strona Główna</a>
+                    <a class="nav-link" href="/">Strona Główna</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">O nas</a>
+                    <a class="nav-link" href="/login">Login</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">kontakt</a>
@@ -88,6 +88,13 @@
     function createUser(login, password) {
         setCookie('login', login, 1)
         setCookie('password', password, 1)
+        setCookie('balance', 100, 8)
+        setCookie('USD', 0.8)
+        setCookie('EUR', 0.8)
+        setCookie('CHF', 0.8)
+        setCookie('CAD', 0.8)
+        setCookie('HKD', 0.8)
+        setCookie('JPY', 0.8)
     }
 
     function check() {
@@ -114,5 +121,7 @@
         }
     }
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>

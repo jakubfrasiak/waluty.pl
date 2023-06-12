@@ -56,10 +56,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Strona Główna</a>
+                        <a class="nav-link" href="/">Strona Główna</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">O nas</a>
+                        <a class="nav-link" href="/login">Login</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">kontakt</a>
@@ -78,50 +78,23 @@
             <div class="text-center">
                 <ul class="currency-list d-inline-block">
                     <li class="currency-list-item">
-                        <span>Stan Konta: 10000zł</span>
+                        <span>Stan Konta: <span id="global-balance"><%-Math.round(JSON.parse(cookies)['balance']*100)/100%> </span>zł</span>
                     </li>
-                    <li class="currency-list-item">
-                        <span>Dolar amerykański: 241</span>
-                        <div class="currency-buttons">
-                            <button class="currency-button btn btn-danger">-</button>
-                            <button class="currency-button btn btn-success">+</button>
-                        </div>
-                    </li>
-                    <li class="currency-list-item">
-                        <span>Euro: 333234</span>
-                        <div class="currency-buttons">
-                            <button class="currency-button btn btn-danger">-</button>
-                            <button class="currency-button btn btn-success">+</button>
-                        </div>
-                    </li>
-                    <li class="currency-list-item">
-                        <span>Frank Szwajcarski: 44</span>
-                        <div class="currency-buttons">
-                            <button class="currency-button btn btn-danger">-</button>
-                            <button class="currency-button btn btn-success">+</button>
-                        </div>
-                    </li>
-                    <li class="currency-list-item">
-                        <span>Dolar Kanadyjski: 2</span>
-                        <div class="currency-buttons">
-                            <button class="currency-button btn btn-danger">-</button>
-                            <button class="currency-button btn btn-success">+</button>
-                        </div>
-                    </li>
-                    <li class="currency-list-item">
-                        <span>Dolar Hongkongu: 4</span>
-                        <div class="currency-buttons">
-                            <button class="currency-button btn btn-danger">-</button>
-                            <button class="currency-button btn btn-success">+</button>
-                        </div>
-                    </li>
-                    <li class="currency-list-item">
-                        <span>Jen (Japonia): 0</span>
-                        <div class="currency-buttons">
-                            <button class="currency-button btn btn-danger">-</button>
-                            <button class="currency-button btn btn-success">+</button>
-                        </div>
-                    </li>
+                    <%
+                        for (const currency of Object.keys(data)) {
+                            const currencyName = data[currency].name;
+                            const currencyCode = data[currency].code;
+                            const currencyRate = data[currency].lastDays[data[currency].lastDays.length - 1];
+                    %>
+                        <li class="currency-list-item" id="<%=currencyCode%>">
+                            <span><%=currencyName%> (<%=currencyCode%>): <%=currencyRate%> Twoje środki: <span id="<%=currencyCode%>-balance"><%-Math.round(JSON.parse(cookies)[currencyCode]*currencyRate*100)/100%></span></span>
+                            <div class="currency-buttons">
+                                <button class="add-money currency-button btn btn-success">+</button>
+                                <button class="remove-money currency-button btn btn-danger">-</button>
+                            </div>
+                        </li>
+                        <% } %>
+
                 </ul>
             </div>
         </div>
@@ -135,5 +108,73 @@
             </div>
         </footer>
     </body>
+    <script>
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        let cookies = JSON.parse('<%-(cookies)%>')
+        let data = JSON.parse('<%-JSON.stringify(data)%>')
+
+        const addMoney = document.querySelectorAll('.add-money')
+        const removeMoney = document.querySelectorAll('.remove-money')
+
+        addMoney.forEach((element) => {
+            element.addEventListener('click', (event) => {
+                const currency = (((event.target).parentElement).parentElement).id
+                const currencyRate = data[currency].lastDays[data[currency].lastDays.length - 1]
+                if (getCookie('balance') >= currencyRate) {
+                    console.log('zakupiono!')
+                    setCookie('balance', parseFloat(getCookie('balance')) - parseFloat(currencyRate), 8)
+                    setCookie(currency, parseInt(getCookie(currency)) + 1, 8)
+                    document.getElementById(`${currency}-balance`).innerText = Math.round(getCookie(currency) * currencyRate * 100) / 100
+                    document.getElementById('global-balance').innerText = Math.round(getCookie('balance') * 100) / 100
+                } else {
+                    console.log('nie stać cie!')
+                }
+            })
+        })
+
+        removeMoney.forEach((element) => {
+            element.addEventListener('click', (event) => {
+                const currency = (((event.target).parentElement).parentElement).id
+                const currencyRate = data[currency].lastDays[data[currency].lastDays.length - 1]
+
+                if (getCookie(currency) > 0) {
+                    console.log('spoko ziom mozesz sprzedac')
+
+                    setCookie('balance', parseFloat(getCookie('balance')) + parseFloat(currencyRate), 8)
+                    setCookie(currency, parseInt(getCookie(currency)) - 1, 8)
+
+                    document.getElementById(`${currency}-balance`).innerText = Math.round(getCookie(currency) * currencyRate * 100) / 100
+                    document.getElementById('global-balance').innerText = Math.round(getCookie('balance') * 100) / 100
+                    console.log(`${currency} masz ${getCookie(currency)} z kursem ${currencyRate} ziomek i ${getCookie('balance')} na koncie`)
+                } else {
+                    console.log('najpierw kup potem sprzedawaj')
+                }
+            })
+        })
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>
