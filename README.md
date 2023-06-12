@@ -26,7 +26,7 @@ W projekcie postawiliśmy na node.js z wykorzystaniem biblioteki express oraz je
 
 Aby uruchomić plik, pobierz najnowszą wersję node.js, oraz wpisz następującą komendy:
 bash
-npm i express chartjs ejs dotenv node-fetch
+npm i express chartjs ejs dotenv cookie-parser node-fetch
 node .
     
 ## Autorzy
